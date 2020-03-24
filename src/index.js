@@ -1,13 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { IconSettings } from '@salesforce/design-system-react';
 import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { IconSettings } from '@salesforce/design-system-react';
+import store from './store';
 
 ReactDOM.render(
   <IconSettings iconPath="/assets/icons">
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </IconSettings>,
   document.getElementById('root')
 );

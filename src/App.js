@@ -1,19 +1,21 @@
-import React from 'react';
-import { Button } from '@salesforce/design-system-react';
-
+import React, { useEffect } from 'react';
+import { Spinner } from '@salesforce/design-system-react';
+import { connect } from 'react-redux';
 import Header from './components/Header';
 import './App.scss';
+import { fetchRequests } from './modules/requests/actions';
 
-const App = () => {
+const App = ({ requests, showSpinner, fetchRequests }) => {
+  useEffect(() => {
+    fetchRequests();
+  }, [fetchRequests]);
+
   return (
     <div className="App">
       <Header userName="My Username" />
       <div className="slds-m-top_xx-large slds-p-top_xx-large">
         <div className="slds-x-small-buttons_horizontal slds-align_absolute-center">
-          <Button label="Base" variant="base" />
-          <Button label="New Subscription" />
-          <Button iconCategory="utility" iconName="download" iconPosition="left" label="Neutral Icon" />
-          <Button label="Responsive" variant="brand" responsive />
+          {showSpinner && <Spinner size="large" variant="base" assistiveText={{ label: 'Main Frame Loading...' }} />}
         </div>
       </div>
     </div>
@@ -22,4 +24,9 @@ const App = () => {
 
 App.propTypes = {};
 
-export default App;
+const mapStateToProps = (state) => ({
+  requestList: state.requests,
+  showSpinner: state.ui.showSpinner,
+});
+
+export default connect(mapStateToProps, { fetchRequests })(App);
